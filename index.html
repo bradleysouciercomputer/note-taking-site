@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Note Nest</title>
+    <style>
+      :root {
+        --bg: #f4f7fb;
+        --panel: #ffffff;
+        --panel-alt: #eef3ff;
+        --primary: #4f46e5;
+        --primary-dark: #3730a3;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --border: #dfe7f4;
+        --danger: #ef4444;
+        --shadow: 0 10px 25px rgba(79, 70, 229, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+        color: var(--text);
+      }
+
+      .app {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 20px 48px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 1.3rem;
+      }
+
+      .brand-badge {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), #7c3aed);
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 1.2rem;
+        box-shadow: var(--shadow);
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 16px;
+        font: inherit;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .primary-btn {
+        background: var(--primary);
+        color: white;
+        font-weight: 600;
+      }
+
+      .primary-btn:hover {
+        background: var(--primary-dark);
+      }
+
+      .secondary-btn {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      .secondary-btn:hover {
+        background: #f8fafc;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 24px;
+      }
+
+      .sidebar,
+      .editor-panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .sidebar {
+        padding: 18px;
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      .note-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .note-item {
+        background: #f9fbff;
+        border: 1px solid transparent;
+        border-radius: 14px;
+        padding: 12px 14px;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .note-item:hover {
+        border-color: var(--border);
+      }
+
+      .note-item.active {
+        background: var(--panel-alt);
+        border-color: rgba(79, 70, 229, 0.22);
+      }
+
+      .note-item h4 {
+        margin: 0 0 4px;
+        font-size: 1rem;
+      }
+
+      .note-meta {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .editor-panel {
+        padding: 20px;
+      }
+
+      .editor-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .title-input {
+        flex: 1;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-size: 1.4rem;
+        font-weight: 700;
+        outline: none;
+      }
+
+      .title-input:focus,
+      .content-input:focus {
+        border-color: rgba(79, 70, 229, 0.45);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+      }
+
+      .content-input {
+        width: 100%;
+        min-height: 500px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        resize: vertical;
+        padding: 18px 20px;
+        font: inherit;
+        line-height: 1.7;
+        outline: none;
+      }
+
+      .empty-state {
+        padding: 30px 12px;
+        text-align: center;
+        color: var(--muted);
+        background: #f9fbff;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+      }
+
+      @media (max-width: 860px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .header-actions {
+          width: 100%;
+        }
+
+        .header-actions button {
+          flex: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge">✎</div>
+          <span>Note Nest</span>
+        </div>
+
+        <div class="header-actions">
+          <button class="secondary-btn" id="newNoteBtn">+ New note</button>
+          <button class="primary-btn" id="saveNoteBtn">Save</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <aside class="sidebar">
+          <h3 class="section-title">Notes</h3>
+          <ul class="note-list" id="noteList"></ul>
+        </aside>
+
+        <section class="editor-panel">
+          <div id="editorEmpty" class="empty-state">
+            Select a note or create a new one to begin writing.
+          </div>
+
+          <div id="editorArea" style="display:none;">
+            <div class="editor-top">
+              <input id="noteTitle" class="title-input" type="text" placeholder="Untitled note" />
+              <button class="secondary-btn" id="deleteNoteBtn">Delete</button>
+            </div>
+            <textarea id="noteContent" class="content-input" placeholder="Write something thoughtful..."></textarea>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const STORAGE_KEY = 'note-nest-notes';
+
+      const noteListEl = document.getElementById('noteList');
+      const editorEmptyEl = document.getElementById('editorEmpty');
+      const editorAreaEl = document.getElementById('editorArea');
+      const noteTitleEl = document.getElementById('noteTitle');
+      const noteContentEl = document.getElementById('noteContent');
+      const saveNoteBtn = document.getElementById('saveNoteBtn');
+      const newNoteBtn = document.getElementById('newNoteBtn');
+      const deleteNoteBtn = document.getElementById('deleteNoteBtn');
+
+      let notes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      let activeNoteId = null;
+
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en', {
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit'
+        }).format(date);
+      }
+
+      function getActiveNote() {
+        return notes.find(note => note.id === activeNoteId) || null;
+      }
+
+      function renderNotes() {
+        noteListEl.innerHTML = '';
+
+        if (!notes.length) {
+          noteListEl.innerHTML = '<li class="empty-state">No notes yet</li>';
+          return;
+        }
+
+        notes
+          .slice()
+          .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+          .forEach(note => {
+            const item = document.createElement('li');
+            item.className = 'note-item' + (note.id === activeNoteId ? ' active' : '');
+            item.innerHTML = `
+              <h4>${escapeHtml(note.title || 'Untitled')}</h4>
+              <div class="note-meta">${note.preview || 'No content yet'} · ${formatDate(note.updatedAt)}</div>
+            `;
+            item.addEventListener('click', () => selectNote(note.id));
+            noteListEl.appendChild(item);
+          });
+      }
+
+      function renderEditor() {
+        const note = getActiveNote();
+
+        if (!note) {
+          editorAreaEl.style.display = 'none';
+          editorEmptyEl.style.display = 'block';
+          return;
+        }
+
+        editorEmptyEl.style.display = 'none';
+        editorAreaEl.style.display = 'block';
+        noteTitleEl.value = note.title;
+        noteContentEl.value = note.content;
+      }
+
+      function persistNotes() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      }
+
+      function selectNote(id) {
+        activeNoteId = id;
+        renderNotes();
+        renderEditor();
+      }
+
+      function createNote() {
+        const newNote = {
+          id: crypto.randomUUID(),
+          title: 'New note',
+          content: '',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+
+        notes.unshift(newNote);
+        activeNoteId = newNote.id;
+        persistNotes();
+        renderNotes();
+        renderEditor();
+      }
+
+      function saveCurrentNote() {
+        const note = getActiveNote();
+        if (!note) return;
+
+        note.title = noteTitleEl.value.trim() || 'Untitled';
+        note.content = noteContentEl.value;
+        note.updatedAt = new Date().toISOString();
+        note.preview = note.content.replace(/\s+/g, ' ').trim().slice(0, 32) || 'No content yet';
+
+        persistNotes();
+        renderNotes();
+      }
+
+      function deleteCurrentNote() {
+        if (!activeNoteId) return;
+
+        const confirmed = window.confirm('Delete this note?');
+        if (!confirmed) return;
+
+        notes = notes.filter(note => note.id !== activeNoteId);
+        activeNoteId = notes[0] ? notes[0].id : null;
+        persistNotes();
+        renderNotes();
+        renderEditor();
+      }
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      newNoteBtn.addEventListener('click', createNote);
+      saveNoteBtn.addEventListener('click', saveCurrentNote);
+      deleteNoteBtn.addEventListener('click', deleteCurrentNote);
+      noteTitleEl.addEventListener('input', saveCurrentNote);
+      noteContentEl.addEventListener('input', saveCurrentNote);
+
+      if (!notes.length) {
+        createNote();
+      } else {
+        activeNoteId = notes[0].id;
+      }
+
+      renderNotes();
+      renderEditor();
+    </script>
+  </body>
+</html>
