@@ -10,13 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     
     <!-- Material Web Library -->
-    <script type="importmap">
-      {
-        "imports": {
-          "@material/web/": "https://esm.sh/@material/web@1.0.0/"
-        }
-      }
-    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/@material/web@1.0.0-rc.1/bundle.min.js"></script>
 
     <style>
       * {
@@ -28,8 +22,13 @@
         padding: 0;
         min-height: 100%;
         font-family: Roboto, sans-serif;
-        background-color: var(--md-sys-color-background, #fffbfe);
-        color: var(--md-sys-color-on-background, #1c1b1f);
+        background-color: #fffbfe;
+        color: #1c1b1f;
+      }
+
+      html[data-theme="dark"] {
+        background-color: #1c1b1f;
+        color: #e6e1e6;
       }
 
       .app-container {
@@ -38,14 +37,12 @@
         flex-direction: column;
       }
 
-      .top-app-bar {
-        background-color: var(--md-sys-color-surface-container-highest, #e8e4ed);
-        padding: 8px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px -1px rgba(0, 0, 0, 0.12);
+      md-top-app-bar {
+        --md-sys-color-surface-container-highest: #e8e4ed;
+      }
+
+      html[data-theme="dark"] md-top-app-bar {
+        --md-sys-color-surface-container-highest: #36343b;
       }
 
       .app-title {
@@ -70,13 +67,18 @@
 
       .sidebar {
         width: 320px;
-        background-color: var(--md-sys-color-surface, #fffbfe);
-        border-right: 1px solid var(--md-sys-color-outline-variant, #c4c7c5);
+        background-color: #fffbfe;
+        border-right: 1px solid #c4c7c5;
         overflow-y: auto;
         padding: 16px;
         display: flex;
         flex-direction: column;
         gap: 24px;
+      }
+
+      html[data-theme="dark"] .sidebar {
+        background-color: #1c1b1f;
+        border-right-color: #49454e;
       }
 
       .sidebar-section {
@@ -88,21 +90,19 @@
       .sidebar-label {
         font-size: 12px;
         font-weight: 500;
-        color: var(--md-sys-color-on-surface-variant, #49454e);
+        color: #49454e;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+      }
+
+      html[data-theme="dark"] .sidebar-label {
+        color: #b0adb5;
       }
 
       .category-list {
         display: flex;
         flex-direction: column;
         gap: 8px;
-      }
-
-      .category-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
       }
 
       .note-list {
@@ -121,34 +121,54 @@
         border-radius: 12px;
         cursor: pointer;
         transition: all 0.2s ease;
-        background-color: var(--md-sys-color-surface-container-low, #f7f2fa);
+        background-color: #f7f2fa;
         text-align: left;
       }
 
+      html[data-theme="dark"] .note-item {
+        background-color: #2b2930;
+      }
+
       .note-item:hover {
-        background-color: var(--md-sys-color-surface-container, #f3edf7);
+        background-color: #f3edf7;
+      }
+
+      html[data-theme="dark"] .note-item:hover {
+        background-color: #36343b;
       }
 
       .note-item.active {
-        background-color: var(--md-sys-color-primary-container, #eaddff);
+        background-color: #eaddff;
+      }
+
+      html[data-theme="dark"] .note-item.active {
+        background-color: #4f378b;
       }
 
       .note-item-title {
         font-size: 14px;
         font-weight: 500;
-        color: var(--md-sys-color-on-surface, #1c1b1f);
+        color: #1c1b1f;
         margin: 0 0 4px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
+      html[data-theme="dark"] .note-item-title {
+        color: #e6e1e6;
+      }
+
       .note-item-meta {
         font-size: 12px;
-        color: var(--md-sys-color-on-surface-variant, #49454e);
+        color: #49454e;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      html[data-theme="dark"] .note-item-meta {
+        color: #b0adb5;
       }
 
       .editor-container {
@@ -163,8 +183,12 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        color: var(--md-sys-color-on-surface-variant, #49454e);
+        color: #49454e;
         font-size: 16px;
+      }
+
+      html[data-theme="dark"] .editor-empty {
+        color: #b0adb5;
       }
 
       .editor-area {
@@ -200,10 +224,14 @@
         font-weight: 400;
         border: none;
         background: transparent;
-        color: var(--md-sys-color-on-background, #1c1b1f);
+        color: #1c1b1f;
         width: 100%;
         outline: none;
         margin: 0 0 12px;
+      }
+
+      html[data-theme="dark"] .editor-title {
+        color: #e6e1e6;
       }
 
       .editor-section {
@@ -213,23 +241,36 @@
       .editor-label {
         font-size: 12px;
         font-weight: 500;
-        color: var(--md-sys-color-on-surface-variant, #49454e);
+        color: #49454e;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 8px;
         display: block;
       }
 
+      html[data-theme="dark"] .editor-label {
+        color: #b0adb5;
+      }
+
       .editor-meta {
         display: flex;
         gap: 24px;
         font-size: 12px;
-        color: var(--md-sys-color-on-surface-variant, #49454e);
+        color: #49454e;
         margin-top: 16px;
+      }
+
+      html[data-theme="dark"] .editor-meta {
+        color: #b0adb5;
       }
 
       .hidden {
         display: none !important;
+      }
+
+      md-filled-text-field,
+      md-filled-select {
+        width: 100%;
       }
 
       @media (max-width: 960px) {
@@ -241,10 +282,14 @@
           width: 100%;
           max-height: 200px;
           border-right: none;
-          border-bottom: 1px solid var(--md-sys-color-outline-variant, #c4c7c5);
+          border-bottom: 1px solid #c4c7c5;
           flex-direction: row;
           overflow-x: auto;
           gap: 16px;
+        }
+
+        html[data-theme="dark"] .sidebar {
+          border-bottom-color: #49454e;
         }
 
         .sidebar-section {
@@ -287,7 +332,7 @@
             id="searchInput" 
             label="Search notes" 
             type="search"
-            style="width: 100%; max-width: 400px;">
+            style="max-width: 400px;">
             <md-icon slot="leading-icon">search</md-icon>
           </md-filled-text-field>
         </div>
@@ -331,7 +376,7 @@
               <div class="editor-header">
                 <div class="editor-title-section">
                   <input id="noteTitle" class="editor-title" type="text" placeholder="Untitled note" />
-                  <div style="display: flex; gap: 12px; align-items: center;">
+                  <div style="display: flex; gap: 12px; align-items: center; margin-top: 12px;">
                     <span class="editor-label" style="margin: 0;">Category</span>
                     <md-filled-select id="noteCategory">
                       <md-select-option selected>
@@ -354,8 +399,7 @@
                 <label class="editor-label" for="noteTags">Tags</label>
                 <md-filled-text-field 
                   id="noteTags" 
-                  label="Add tags separated by commas"
-                  style="width: 100%;">
+                  label="Add tags separated by commas">
                 </md-filled-text-field>
               </div>
 
@@ -365,10 +409,10 @@
                   width: 100%;
                   min-height: 400px;
                   padding: 12px 16px;
-                  border: 1px solid var(--md-sys-color-outline, #79747e);
+                  border: 1px solid #c4c7c5;
                   border-radius: 8px;
-                  background-color: var(--md-sys-color-surface-container-low, #f7f2fa);
-                  color: var(--md-sys-color-on-surface, #1c1b1f);
+                  background-color: #f7f2fa;
+                  color: #1c1b1f;
                   font-size: 14px;
                   font-family: Roboto, sans-serif;
                   outline: none;
@@ -377,10 +421,12 @@
                 " placeholder="Start typing..."></textarea>
               </div>
 
-              <div class="editor-meta">
-                <span id="createdAt">Created —</span>
-                <span id="updatedAt">Updated —</span>
-                <span id="wordCount">0 words</span>
+              <div style="margin-top: 24px;">
+                <div class="editor-meta">
+                  <span id="createdAt">Created —</span>
+                  <span id="updatedAt">Updated —</span>
+                  <span id="wordCount">0 words</span>
+                </div>
               </div>
             </div>
           </div>
@@ -390,19 +436,8 @@
 
     <input id="fileInput" class="hidden" type="file" accept="application/json" />
 
-    <script type="module">
-      import '@material/web/all.js';
-      import {
-        MdTopAppBar,
-        MdIconButton,
-        MdFilledButton,
-        MdFilledTextField,
-        MdFilledSelect,
-        MdSelectOption,
-        MdIcon
-      } from '@material/web/all.js';
-
-      const STORAGE_KEY = 'note-nest-v4';
+    <script>
+      const STORAGE_KEY = 'note-nest-v5';
       const THEME_KEY = 'note-nest-theme';
       const CATEGORIES_KEY = 'note-nest-categories';
 
@@ -547,7 +582,7 @@
 
         if (!filtered.length) {
           const li = document.createElement('li');
-          li.style.cssText = 'color: var(--md-sys-color-on-surface-variant, #49454e); font-size: 12px;';
+          li.style.cssText = 'color: #49454e; font-size: 12px;';
           li.textContent = 'No notes';
           noteListEl.appendChild(li);
           return;
@@ -658,12 +693,10 @@
       function setTheme(isDark) {
         const html = document.documentElement;
         if (isDark) {
-          html.style.colorScheme = 'dark';
-          document.body.style.backgroundColor = '#1c1b1f';
+          html.setAttribute('data-theme', 'dark');
           themeToggleBtn.innerHTML = '<md-icon>light_mode</md-icon>';
         } else {
-          html.style.colorScheme = 'light';
-          document.body.style.backgroundColor = '#fffbfe';
+          html.removeAttribute('data-theme');
           themeToggleBtn.innerHTML = '<md-icon>dark_mode</md-icon>';
         }
         localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
@@ -712,49 +745,51 @@
         reader.readAsText(file);
       }
 
-      document.getElementById('newNoteBtn').addEventListener('click', createNote);
-      document.getElementById('deleteNoteBtn').addEventListener('click', deleteCurrentNote);
-      document.getElementById('pinToggleBtn').addEventListener('click', togglePin);
-      document.getElementById('exportBtn').addEventListener('click', exportNotes);
-      document.getElementById('importBtn').addEventListener('click', () => fileInputEl.click());
-      fileInputEl.addEventListener('change', importNotes);
-      themeToggleBtn.addEventListener('click', () => {
-        const isDark = document.documentElement.style.colorScheme === 'dark';
-        setTheme(!isDark);
-      });
-
-      searchInputEl.addEventListener('input', (event) => {
-        currentSearch = event.target.value.trim();
-        renderNotes();
-      });
-
-      noteTitleEl.addEventListener('input', saveCurrentNote);
-      noteTagsEl.addEventListener('input', saveCurrentNote);
-      noteContentEl.addEventListener('input', () => {
-        saveCurrentNote();
-        wordCountEl.textContent = countWords(noteContentEl.value) + ' words';
-      });
-      noteCategoryEl.addEventListener('change', saveCurrentNote);
-
-      const savedTheme = localStorage.getItem(THEME_KEY) === 'dark';
-      setTheme(savedTheme);
-
-      function updateCategoryDropdown() {
-        const existingOptions = noteCategoryEl.querySelectorAll('md-select-option:not([selected])');
-        existingOptions.forEach(opt => opt.remove());
-        categories.forEach(cat => {
-          const option = document.createElement('md-select-option');
-          option.innerHTML = `<div slot="headline">${cat}</div>`;
-          option.value = cat;
-          noteCategoryEl.appendChild(option);
+      // Wait for Material Web to load
+      window.addEventListener('load', () => {
+        document.getElementById('newNoteBtn').addEventListener('click', createNote);
+        document.getElementById('deleteNoteBtn').addEventListener('click', deleteCurrentNote);
+        document.getElementById('pinToggleBtn').addEventListener('click', togglePin);
+        document.getElementById('exportBtn').addEventListener('click', exportNotes);
+        document.getElementById('importBtn').addEventListener('click', () => fileInputEl.click());
+        fileInputEl.addEventListener('change', importNotes);
+        themeToggleBtn.addEventListener('click', () => {
+          const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          setTheme(!isDark);
         });
-      }
 
-      activeNoteId = notes[0]?.id || null;
-      renderCategories();
-      renderNotes();
-      renderEditor();
-      updateCategoryDropdown();
+        searchInputEl.addEventListener('input', (event) => {
+          currentSearch = event.target.value.trim();
+          renderNotes();
+        });
+
+        noteTitleEl.addEventListener('input', saveCurrentNote);
+        noteTagsEl.addEventListener('input', saveCurrentNote);
+        noteContentEl.addEventListener('input', () => {
+          saveCurrentNote();
+          wordCountEl.textContent = countWords(noteContentEl.value) + ' words';
+        });
+        noteCategoryEl.addEventListener('change', saveCurrentNote);
+
+        const savedTheme = localStorage.getItem(THEME_KEY) === 'dark';
+        setTheme(savedTheme);
+
+        function updateCategoryDropdown() {
+          const existingOptions = noteCategoryEl.querySelectorAll('md-select-option:not([selected])');
+          existingOptions.forEach(opt => opt.remove());
+          categories.forEach(cat => {
+            const option = document.createElement('md-select-option');
+            option.innerHTML = `<div slot="headline">${cat}</div>`;
+            noteCategoryEl.appendChild(option);
+          });
+        }
+
+        activeNoteId = notes[0]?.id || null;
+        renderCategories();
+        renderNotes();
+        renderEditor();
+        updateCategoryDropdown();
+      });
     </script>
   </body>
 </html>
