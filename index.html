@@ -14,23 +14,51 @@
         --text: #1f2937;
         --muted: #6b7280;
         --border: #dfe7f4;
+        --hover: #f8fafc;
+        --success: #10b981;
+        --warning: #f59e0b;
         --danger: #ef4444;
         --shadow: 0 10px 25px rgba(79, 70, 229, 0.08);
       }
 
+      body.dark {
+        --bg: #0f172a;
+        --panel: #111827;
+        --panel-alt: #1f2937;
+        --primary: #818cf8;
+        --primary-dark: #6366f1;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --border: #2f3a4f;
+        --hover: #172033;
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #f87171;
+        --shadow: 0 14px 28px rgba(15, 23, 42, 0.35);
+      }
+
       * { box-sizing: border-box; }
 
-      body {
+      html, body {
         margin: 0;
+        min-height: 100%;
         font-family: Inter, "Segoe UI", Roboto, sans-serif;
-        background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+        background: var(--bg);
         color: var(--text);
       }
 
+      body {
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      button, input, textarea {
+        font: inherit;
+      }
+
       .app {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
-        padding: 32px 20px 48px;
+        padding: 28px 18px 48px;
       }
 
       .topbar {
@@ -45,64 +73,85 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        font-weight: 700;
-        font-size: 1.3rem;
+        font-weight: 800;
+        font-size: 1.35rem;
       }
 
       .brand-badge {
         width: 42px;
         height: 42px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--primary), #7c3aed);
-        color: white;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--primary), #8b5cf6);
         display: grid;
         place-items: center;
-        font-size: 1.2rem;
+        color: #fff;
         box-shadow: var(--shadow);
       }
 
-      .header-actions {
+      .topbar-actions {
         display: flex;
+        align-items: center;
         gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .search-wrap {
+        position: relative;
+      }
+
+      .search-wrap input {
+        width: min(360px, 52vw);
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text);
+        padding: 11px 14px 11px 42px;
+        border-radius: 12px;
+        outline: none;
+      }
+
+      .search-wrap::before {
+        content: "⌕";
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 1.1rem;
       }
 
       button {
         border: none;
         border-radius: 12px;
         padding: 10px 16px;
-        font: inherit;
         cursor: pointer;
-        transition: 0.2s ease;
+        transition: all 0.2s ease;
       }
 
       .primary-btn {
         background: var(--primary);
-        color: white;
-        font-weight: 600;
+        color: #fff;
+        font-weight: 700;
       }
 
-      .primary-btn:hover {
-        background: var(--primary-dark);
-      }
+      .primary-btn:hover { background: var(--primary-dark); }
 
       .secondary-btn {
         background: var(--panel);
-        border: 1px solid var(--border);
         color: var(--text);
+        border: 1px solid var(--border);
       }
 
-      .secondary-btn:hover {
-        background: #f8fafc;
-      }
+      .secondary-btn:hover { background: var(--hover); }
 
       .layout {
         display: grid;
-        grid-template-columns: 320px 1fr;
-        gap: 24px;
+        grid-template-columns: 350px minmax(0, 1fr);
+        gap: 22px;
       }
 
       .sidebar,
-      .editor-panel {
+      .editor-panel,
+      .stats {
         background: var(--panel);
         border: 1px solid var(--border);
         border-radius: 20px;
@@ -110,15 +159,41 @@
       }
 
       .sidebar {
-        padding: 18px;
+        padding: 18px 16px;
+      }
+
+      .sidebar-section {
+        margin-bottom: 18px;
       }
 
       .section-title {
-        margin: 0 0 14px;
-        font-size: 0.8rem;
+        margin: 0 0 12px;
+        font-size: 0.75rem;
+        color: var(--muted);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: var(--muted);
+      }
+
+      .filter-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .filter-chip {
+        background: var(--hover);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+      }
+
+      .filter-chip.active {
+        background: var(--panel-alt);
+        border-color: rgba(79, 70, 229, 0.35);
+        color: var(--primary);
+        font-weight: 700;
       }
 
       .note-list {
@@ -131,35 +206,85 @@
       }
 
       .note-item {
-        background: #f9fbff;
         border: 1px solid transparent;
+        background: var(--hover);
         border-radius: 14px;
-        padding: 12px 14px;
+        padding: 12px 12px;
         cursor: pointer;
         transition: 0.2s ease;
       }
 
-      .note-item:hover {
-        border-color: var(--border);
-      }
-
+      .note-item:hover { border-color: var(--border); }
       .note-item.active {
         background: var(--panel-alt);
-        border-color: rgba(79, 70, 229, 0.22);
+        border-color: rgba(79, 70, 229, 0.3);
+      }
+
+      .note-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .pin-indicator {
+        color: var(--warning);
+        font-size: 0.9rem;
       }
 
       .note-item h4 {
-        margin: 0 0 4px;
+        margin: 0 0 6px;
         font-size: 1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
-      .note-meta {
+      .note-preview {
         color: var(--muted);
         font-size: 0.8rem;
+        line-height: 1.4;
+      }
+
+      .meta-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.75rem;
+        margin-top: 8px;
+      }
+
+      .tag-stack {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+
+      .tag {
+        background: rgba(79, 70, 229, 0.08);
+        color: var(--primary);
+        border-radius: 999px;
+        padding: 3px 7px;
+        font-size: 0.7rem;
       }
 
       .editor-panel {
-        padding: 20px;
+        padding: 18px;
+      }
+
+      .editor-empty {
+        padding: 30px 16px;
+        text-align: center;
+        color: var(--muted);
+        background: var(--hover);
+        border: 1px dashed var(--border);
+        border-radius: 14px;
+      }
+
+      .editor-area {
+        display: none;
       }
 
       .editor-top {
@@ -170,59 +295,129 @@
         margin-bottom: 16px;
       }
 
+      .editor-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       .title-input {
-        flex: 1;
+        width: 100%;
         border: 1px solid var(--border);
         border-radius: 12px;
+        background: var(--panel);
+        color: var(--text);
         padding: 14px 16px;
-        font-size: 1.4rem;
-        font-weight: 700;
+        font-size: clamp(1.3rem, 2.2vw, 2rem);
+        font-weight: 800;
         outline: none;
       }
 
-      .title-input:focus,
-      .content-input:focus {
-        border-color: rgba(79, 70, 229, 0.45);
-        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+      .line-input {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--panel);
+        color: var(--text);
+        padding: 10px 12px;
+        width: 100%;
+        outline: none;
+      }
+
+      .meta-bar {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+
+      .meta-pill {
+        font-size: 0.75rem;
+        color: var(--muted);
+        background: var(--hover);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 6px 10px;
       }
 
       .content-input {
         width: 100%;
-        min-height: 500px;
+        min-height: 520px;
+        resize: vertical;
         border: 1px solid var(--border);
         border-radius: 16px;
-        resize: vertical;
-        padding: 18px 20px;
-        font: inherit;
+        background: var(--panel);
+        color: var(--text);
+        padding: 18px 18px;
         line-height: 1.7;
         outline: none;
       }
 
-      .empty-state {
-        padding: 30px 12px;
-        text-align: center;
-        color: var(--muted);
-        background: #f9fbff;
-        border: 1px dashed var(--border);
-        border-radius: 12px;
+      .stats {
+        padding: 16px;
+        margin-top: 18px;
       }
 
-      @media (max-width: 860px) {
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stat-card {
+        background: var(--hover);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+
+      .stat-label {
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .stat-value {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin-top: 6px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 980px) {
         .layout {
           grid-template-columns: 1fr;
         }
 
+        .search-wrap input {
+          width: min(100%, 300px);
+        }
+      }
+
+      @media (max-width: 620px) {
         .topbar {
           flex-direction: column;
           align-items: flex-start;
         }
 
-        .header-actions {
+        .topbar-actions {
           width: 100%;
         }
 
-        .header-actions button {
-          flex: 1;
+        .search-wrap {
+          width: 100%;
+        }
+
+        .search-wrap input {
+          width: 100%;
+        }
+
+        .editor-top {
+          flex-wrap: wrap;
         }
       }
     </style>
@@ -235,84 +430,228 @@
           <span>Note Nest</span>
         </div>
 
-        <div class="header-actions">
-          <button class="secondary-btn" id="newNoteBtn">+ New note</button>
-          <button class="primary-btn" id="saveNoteBtn">Save</button>
+        <div class="topbar-actions">
+          <div class="search-wrap">
+            <input id="searchInput" type="text" placeholder="Search notes" />
+          </div>
+          <button class="secondary-btn" id="themeToggleBtn">🌙</button>
+          <button class="secondary-btn" id="importBtn">Import</button>
+          <button class="secondary-btn" id="exportBtn">Export</button>
+          <button class="primary-btn" id="newNoteBtn">+ New note</button>
         </div>
       </header>
 
       <main class="layout">
         <aside class="sidebar">
-          <h3 class="section-title">Notes</h3>
-          <ul class="note-list" id="noteList"></ul>
-        </aside>
-
-        <section class="editor-panel">
-          <div id="editorEmpty" class="empty-state">
-            Select a note or create a new one to begin writing.
+          <div class="sidebar-section">
+            <h3 class="section-title">Filters</h3>
+            <div class="filter-list" id="filters">
+              <button class="filter-chip active" data-filter="all">All</button>
+              <button class="filter-chip" data-filter="pinned">Pinned</button>
+              <button class="filter-chip" data-filter="recent">Recent</button>
+            </div>
           </div>
 
-          <div id="editorArea" style="display:none;">
-            <div class="editor-top">
-              <input id="noteTitle" class="title-input" type="text" placeholder="Untitled note" />
-              <button class="secondary-btn" id="deleteNoteBtn">Delete</button>
+          <div class="sidebar-section">
+            <h3 class="section-title">Notes</h3>
+            <ul class="note-list" id="noteList"></ul>
+          </div>
+        </aside>
+
+        <section>
+          <div class="editor-panel">
+            <div id="editorEmpty" class="editor-empty">
+              Pick a note or create a new one to start writing.
             </div>
-            <textarea id="noteContent" class="content-input" placeholder="Write something thoughtful..."></textarea>
+
+            <div id="editorArea" class="editor-area">
+              <div class="editor-top">
+                <div class="editor-controls" style="flex:1;">
+                  <input id="noteTitle" class="title-input" type="text" placeholder="Untitled note" />
+                </div>
+                <div class="editor-controls">
+                  <button class="secondary-btn" id="pinToggleBtn">Pin</button>
+                  <button class="secondary-btn" id="deleteNoteBtn">Delete</button>
+                </div>
+              </div>
+
+              <div class="meta-bar">
+                <span id="createdAt" class="meta-pill">Created —</span>
+                <span id="updatedAt" class="meta-pill">Updated —</span>
+              </div>
+
+              <input id="noteTags" class="line-input" type="text" placeholder="Add tags separated by commas" />
+
+              <div style="margin: 16px 0;">
+                <textarea id="noteContent" class="content-input" placeholder="Write something beautiful..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-label">Total notes</div>
+                <div class="stat-value" id="totalNotesStat">0</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Pinned</div>
+                <div class="stat-value" id="pinnedNotesStat">0</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Tags</div>
+                <div class="stat-value" id="tagsStat">0</div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
     </div>
 
+    <input id="fileInput" class="hidden" type="file" accept="application/json" />
+
     <script>
-      const STORAGE_KEY = 'note-nest-notes';
+      const STORAGE_KEY = 'note-nest-v2';
+      const THEME_KEY = 'note-nest-theme';
 
       const noteListEl = document.getElementById('noteList');
       const editorEmptyEl = document.getElementById('editorEmpty');
       const editorAreaEl = document.getElementById('editorArea');
       const noteTitleEl = document.getElementById('noteTitle');
+      const noteTagsEl = document.getElementById('noteTags');
       const noteContentEl = document.getElementById('noteContent');
-      const saveNoteBtn = document.getElementById('saveNoteBtn');
-      const newNoteBtn = document.getElementById('newNoteBtn');
-      const deleteNoteBtn = document.getElementById('deleteNoteBtn');
+      const createdAtEl = document.getElementById('createdAt');
+      const updatedAtEl = document.getElementById('updatedAt');
+      const searchInputEl = document.getElementById('searchInput');
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const fileInputEl = document.getElementById('fileInput');
 
       let notes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
       let activeNoteId = null;
+      let currentFilter = 'all';
+      let currentSearch = '';
 
-      function formatDate(dateString) {
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat('en', {
+      function initDemoNotes() {
+        notes = [
+          {
+            id: crypto.randomUUID(),
+            title: 'Weekly ideas',
+            content: 'Launch a new note-taking workflow. Add tags and pin the most important ideas.\n\n- Improve onboarding\n- Refine landing page copy\n- Create a content roadmap',
+            tags: ['ideas', 'planning'],
+            pinned: true,
+            createdAt: new Date(Date.now() - 86400000).toISOString(),
+            updatedAt: new Date(Date.now() - 900000).toISOString()
+          },
+          {
+            id: crypto.randomUUID(),
+            title: 'Travel checklist',
+            content: 'Passport, charger, wallet, headphones, comfortable shoes.\n\nRemember to book the train ticket before Friday.',
+            tags: ['travel', 'personal'],
+            pinned: false,
+            createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
+            updatedAt: new Date(Date.now() - 3 * 3600000).toISOString()
+          }
+        ];
+        activeNoteId = notes[0].id;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      }
+
+      if (!notes.length) {
+        initDemoNotes();
+      }
+
+      function saveNotes() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      }
+
+      function formatDate(dateStr) {
+        return new Date(dateStr).toLocaleString([], {
           month: 'short',
           day: 'numeric',
           hour: 'numeric',
           minute: '2-digit'
-        }).format(date);
+        });
+      }
+
+      function getFilteredNotes() {
+        let list = [...notes];
+
+        if (currentSearch) {
+          const search = currentSearch.toLowerCase();
+          list = list.filter(note => {
+            const haystack = `${note.title} ${note.content} ${note.tags.join(' ')}`.toLowerCase();
+            return haystack.includes(search);
+          });
+        }
+
+        if (currentFilter === 'pinned') {
+          list = list.filter(note => note.pinned);
+        } else if (currentFilter === 'recent') {
+          list = list.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).slice(0, 8);
+        }
+
+        return list.sort((a, b) => {
+          if (a.pinned !== b.pinned) return Number(b.pinned) - Number(a.pinned);
+          return new Date(b.updatedAt) - new Date(a.updatedAt);
+        });
+      }
+
+      function escapeHtml(str = '') {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
       }
 
       function getActiveNote() {
         return notes.find(note => note.id === activeNoteId) || null;
       }
 
+      function renderStats() {
+        const totalNotes = notes.length;
+        const pinnedNotes = notes.filter(note => note.pinned).length;
+        const uniqueTags = new Set(notes.flatMap(note => note.tags || [])).size;
+
+        document.getElementById('totalNotesStat').textContent = totalNotes;
+        document.getElementById('pinnedNotesStat').textContent = pinnedNotes;
+        document.getElementById('tagsStat').textContent = uniqueTags;
+      }
+
       function renderNotes() {
+        const filtered = getFilteredNotes();
         noteListEl.innerHTML = '';
 
-        if (!notes.length) {
-          noteListEl.innerHTML = '<li class="empty-state">No notes yet</li>';
+        if (!filtered.length) {
+          noteListEl.innerHTML = '<li class="note-item"><div class="note-preview">No notes match your search.</div></li>';
           return;
         }
 
-        notes
-          .slice()
-          .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-          .forEach(note => {
-            const item = document.createElement('li');
-            item.className = 'note-item' + (note.id === activeNoteId ? ' active' : '');
-            item.innerHTML = `
+        filtered.forEach(note => {
+          const li = document.createElement('li');
+          li.className = 'note-item' + (note.id === activeNoteId ? ' active' : '');
+          li.innerHTML = `
+            <div class="note-header">
               <h4>${escapeHtml(note.title || 'Untitled')}</h4>
-              <div class="note-meta">${note.preview || 'No content yet'} · ${formatDate(note.updatedAt)}</div>
-            `;
-            item.addEventListener('click', () => selectNote(note.id));
-            noteListEl.appendChild(item);
+              ${note.pinned ? '<span class="pin-indicator">📌</span>' : ''}
+            </div>
+            <div class="note-preview">${escapeHtml((note.content || '').replace(/\n/g, ' ').slice(0, 80) || 'No content yet')}</div>
+            <div class="tag-stack">
+              ${(note.tags || []).slice(0, 2).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('') || '<span class="tag">untagged</span>'}
+            </div>
+            <div class="meta-row">
+              <span>${formatDate(note.updatedAt)}</span>
+              <span>${note.content ? Math.min(400, note.content.length) + ' chars' : 'empty'}</span>
+            </div>
+          `;
+          li.addEventListener('click', () => {
+            activeNoteId = note.id;
+            renderNotes();
+            renderEditor();
           });
+          noteListEl.appendChild(li);
+        });
       }
 
       function renderEditor() {
@@ -326,34 +665,32 @@
 
         editorEmptyEl.style.display = 'none';
         editorAreaEl.style.display = 'block';
-        noteTitleEl.value = note.title;
-        noteContentEl.value = note.content;
-      }
-
-      function persistNotes() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-      }
-
-      function selectNote(id) {
-        activeNoteId = id;
-        renderNotes();
-        renderEditor();
+        noteTitleEl.value = note.title || '';
+        noteTagsEl.value = (note.tags || []).join(', ');
+        noteContentEl.value = note.content || '';
+        createdAtEl.textContent = 'Created ' + formatDate(note.createdAt);
+        updatedAtEl.textContent = 'Updated ' + formatDate(note.updatedAt);
+        document.getElementById('pinToggleBtn').textContent = note.pinned ? 'Unpin' : 'Pin';
       }
 
       function createNote() {
+        const now = new Date().toISOString();
         const newNote = {
           id: crypto.randomUUID(),
           title: 'New note',
           content: '',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          tags: [],
+          pinned: false,
+          createdAt: now,
+          updatedAt: now
         };
 
         notes.unshift(newNote);
         activeNoteId = newNote.id;
-        persistNotes();
+        saveNotes();
         renderNotes();
         renderEditor();
+        renderStats();
       }
 
       function saveCurrentNote() {
@@ -361,50 +698,128 @@
         if (!note) return;
 
         note.title = noteTitleEl.value.trim() || 'Untitled';
+        note.tags = noteTagsEl.value
+          .split(',')
+          .map(tag => tag.trim())
+          .filter(Boolean)
+          .filter((tag, index, arr) => arr.indexOf(tag) === index);
         note.content = noteContentEl.value;
         note.updatedAt = new Date().toISOString();
-        note.preview = note.content.replace(/\s+/g, ' ').trim().slice(0, 32) || 'No content yet';
 
-        persistNotes();
+        saveNotes();
         renderNotes();
+        renderEditor();
+        renderStats();
       }
 
       function deleteCurrentNote() {
-        if (!activeNoteId) return;
+        const note = getActiveNote();
+        if (!note) return;
 
-        const confirmed = window.confirm('Delete this note?');
-        if (!confirmed) return;
+        const ok = window.confirm(`Delete "${note.title}"?`);
+        if (!ok) return;
 
-        notes = notes.filter(note => note.id !== activeNoteId);
+        notes = notes.filter(n => n.id !== note.id);
         activeNoteId = notes[0] ? notes[0].id : null;
-        persistNotes();
+        saveNotes();
         renderNotes();
         renderEditor();
+        renderStats();
       }
 
-      function escapeHtml(str) {
-        return str
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
+      function togglePin() {
+        const note = getActiveNote();
+        if (!note) return;
+
+        note.pinned = !note.pinned;
+        note.updatedAt = new Date().toISOString();
+        saveNotes();
+        renderNotes();
+        renderEditor();
+        renderStats();
       }
 
-      newNoteBtn.addEventListener('click', createNote);
-      saveNoteBtn.addEventListener('click', saveCurrentNote);
-      deleteNoteBtn.addEventListener('click', deleteCurrentNote);
+      function setTheme(isDark) {
+        document.body.classList.toggle('dark', isDark);
+        localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+        themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+      }
+
+      function exportNotes() {
+        const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'notes-export.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function importNotes(event) {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const parsed = JSON.parse(reader.result);
+            if (!Array.isArray(parsed)) throw new Error('Invalid file format');
+            notes = parsed.map(n => ({
+              id: n.id || crypto.randomUUID(),
+              title: n.title || 'Untitled',
+              content: n.content || '',
+              tags: Array.isArray(n.tags) ? n.tags : [],
+              pinned: Boolean(n.pinned),
+              createdAt: n.createdAt || new Date().toISOString(),
+              updatedAt: n.updatedAt || new Date().toISOString()
+            }));
+            activeNoteId = notes[0]?.id || null;
+            saveNotes();
+            renderNotes();
+            renderEditor();
+            renderStats();
+          } catch (err) {
+            alert('Could not import notes. Please use a valid JSON export from this app.');
+          } finally {
+            event.target.value = '';
+          }
+        };
+
+        reader.readAsText(file);
+      }
+
+      document.getElementById('newNoteBtn').addEventListener('click', createNote);
+      document.getElementById('deleteNoteBtn').addEventListener('click', deleteCurrentNote);
+      document.getElementById('pinToggleBtn').addEventListener('click', togglePin);
+      document.getElementById('exportBtn').addEventListener('click', exportNotes);
+      document.getElementById('importBtn').addEventListener('click', () => fileInputEl.click());
+      fileInputEl.addEventListener('change', importNotes);
+      themeToggleBtn.addEventListener('click', () => setTheme(!document.body.classList.contains('dark')));
+
+      searchInputEl.addEventListener('input', (event) => {
+        currentSearch = event.target.value.trim();
+        renderNotes();
+      });
+
+      document.querySelectorAll('.filter-chip').forEach(button => {
+        button.addEventListener('click', () => {
+          currentFilter = button.dataset.filter;
+          document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.toggle('active', btn === button));
+          renderNotes();
+        });
+      });
+
       noteTitleEl.addEventListener('input', saveCurrentNote);
+      noteTagsEl.addEventListener('input', saveCurrentNote);
       noteContentEl.addEventListener('input', saveCurrentNote);
 
-      if (!notes.length) {
-        createNote();
-      } else {
-        activeNoteId = notes[0].id;
-      }
+      const savedTheme = localStorage.getItem(THEME_KEY) === 'dark';
+      setTheme(savedTheme);
 
+      activeNoteId = notes[0]?.id || null;
       renderNotes();
       renderEditor();
+      renderStats();
     </script>
   </body>
 </html>
