@@ -1,30 +1,29 @@
 # Hoplink — cloud shortcut hub
 
-A responsive personal dashboard for saving, organizing, searching, favoriting, and opening your links. User accounts use Supabase email/password authentication and shortcuts sync to the cloud.
+Hoplink is a responsive personal dashboard for saving, organizing, searching, favoriting, and opening links. Accounts use Supabase email/password authentication, and shortcuts sync to Postgres.
 
 ## Features
 
-- Email/password sign-up and sign-in, password reset, and sign-out
-- Personal cloud-synced shortcuts protected by Supabase Row Level Security
-- Add, edit, delete, favorite, and copy shortcut URLs
-- Custom categories, emoji icons, soft accent colors, and descriptions
-- Search, category filtering, favorites filtering, and grid/list views
-- JSON export/import for backups
-- Responsive layout for desktop, tablet, and mobile
-- Supabase project credentials are entered in the app and stored in that browser only
+- Email/password sign-up, sign-in, password reset, and sign-out
+- Private cloud-synced shortcuts protected by row-level security
+- Add, edit, delete, favorite, and open links
+- Custom categories, emoji icons, colors, and descriptions
+- Search, filters, grid/list views, JSON import/export
+- Responsive dashboard for desktop, tablet, and mobile
 
-## Setup
+## Run locally
 
-1. Create or select the Supabase project you want to use for Hoplink.
-2. In Supabase, open **SQL Editor** and run [`supabase/schema.sql`](supabase/schema.sql). This creates `public.hoplink_shortcuts`, turns on RLS, grants only authenticated access, and restricts rows to their owner.
-3. In Supabase **Project Settings → API Keys**, copy the project URL and the **publishable** key (`sb_publishable_...`). Do not use a `service_role` key or secret key in this browser app.
-4. Serve this folder as a static site, e.g. with `python -m http.server 8000` from this folder, then open `http://localhost:8000`. Alternatively deploy the folder to any static web host.
-5. On first launch, choose **Connect Supabase**, paste the project URL and publishable key, and save. Those values are stored in local storage in the current browser; they are public-client credentials, not a substitute for database security. RLS is what protects each user's records.
-6. Create an account with an email/password. If email confirmation is enabled in Supabase, follow the confirmation link before signing in. Add your deployment URL to Supabase **Authentication → URL Configuration → Redirect URLs**.
+1. Use a static server from this directory, for example `python -m http.server 8000`.
+2. Open `http://localhost:8000`.
+3. Create an account with an email/password. If confirmations are enabled in Supabase, verify your email before signing in.
 
-## Important notes
+The standalone `index.html` is preconfigured for the Supabase project where `public.hoplink_shortcuts` was created. Its URL and publishable API key are public-client credentials. Never put a `service_role` or secret key in frontend code.
 
-- The included SQL file is intentionally not applied to any existing project automatically. Choose the right Supabase project first.
-- The app uses the pinned browser UMD build of `@supabase/supabase-js` version `2.117.3` from jsDelivr.
-- For production use, enable email confirmation, add your real domain to the Auth redirect allowlist, and consider CAPTCHA/rate limits for public sign-up.
-- Export your shortcuts from the top-right **Export** action to keep a portable JSON backup.
+## Use a different Supabase project
+
+1. Open `supabase/schema.sql` in the target project's SQL Editor and run it.
+2. From the Hoplink sign-in screen, select **Change project** and enter the target project's URL and publishable key.
+
+The schema has been applied to the current connected project. It creates only `public.hoplink_shortcuts`, enables RLS, and defines four owner-scoped policies for reading, creating, updating, and deleting rows. The existing project's other tables were left unchanged.
+
+For production, add your final site URL to Supabase **Authentication → URL Configuration → Redirect URLs** and keep email confirmation enabled.
